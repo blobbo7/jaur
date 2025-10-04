@@ -1,0 +1,36 @@
+#! /usr/bin/bash
+
+arg_amount=1
+
+for x in $@
+do
+    if [ $install ]
+        then
+        	inst="install"
+
+        	mkdir -p $HOME/.jaur/clone
+
+        	cd $HOME/.jaur/clone
+        	rm -rf ${x}
+        	git clone "https://aur.archlinux.org/${x}.git"
+        	cd ${x}
+        	makepkg -si
+        fi
+
+    if [ $remove ]
+    	then
+    		echo "use sudo pacman -Rns ${x}"
+    	fi
+
+    if [ $x == "-s" ]
+	    then
+			install=true
+	    fi
+
+	if [ $x == "-r" ]
+		then
+			remove=true
+		fi
+	
+	let "arg_amount++"
+done
